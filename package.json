@@ -1,8 +1,8 @@
 {
-  "name": "PolyHack",
-  "version": "0.1.0",
+  "name": "LemonLandlord",
+  "version": "0.0.1",
   "private": true,
-  "homepage":"http://trind01.github.io/EMTApp",
+  "homepage":"https://www.lemonlandlord.com/", //break things
   "dependencies": {
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
