@@ -9,19 +9,19 @@ class PageView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {treePath: 0};
-		this.treeLabel = "What is the emergency"
+		this.treeLabel = "What isn't perfect about your rental?"
 		this.handleClick = this.handleClick.bind(this);
 		this.returnToStart = this.returnToStart.bind(this);
 		this.buttonsInstance = (
 			<div>
 			    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='0'>
-			      Cardiac/Heart
+			      Safety
 			    </Button>
 			    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='1'>
-			      Breathing
+			      Appliances
 			    </Button>
 			     <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='2'>
-			      Bleeding
+			      Heating
 			    </Button>
 			     <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='3'>
 			      Unsure
@@ -76,14 +76,14 @@ class PageView extends Component {
 	{
 		switch(parseInt(id,10)){
 			case 0:
-				this.treeLabel = "Do they have a pulse";
+				this.treeLabel = "Heat work?";
 				this.buttonsInstance = (
 					<div>
 					    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='0'>
-					      No Pulse
+					      Yes
 					    </Button>
 					    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='1'>
-					      Pulse
+					      No
 					    </Button>
 					    
 					</div>
@@ -92,17 +92,17 @@ class PageView extends Component {
 				this.setState((state) => ({ treePath:1}));
 				break;
 			case 1:
-				this.treeLabel = "What is the breathing issue?";
+				this.treeLabel = "What is the appliance problem?";
 				this.buttonsInstance = (
 					<div>
 					    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='0'>
-					      Allergy
+					      Fridge
 					    </Button>
 					    <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='1'>
-					      Chocking
+					      Dishwasher
 					    </Button>
 					     <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='2'>
-					      Asthma
+					      Microwave
 					    </Button>
 					     <Button bsStyle="primary" bsSize="lg" block onClick={this.handleClick} id='3'>
 					      Unsure
