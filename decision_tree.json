@@ -1,0 +1,65 @@
+{
+    "1": {
+        "question": "Is your apartment perfect?",
+        "next": {
+            "Yes": "End",
+            "No": "2"
+        }
+    },
+    "2": {
+        "question": "Do all your appliances work?",
+        "next": {
+            "Yes": "4",
+            "No": "3"
+        }
+    },
+    "3": {
+        "question": "Does everything in your kitchen work?",
+        "next": {
+            "Yes": "4",
+            "No": "4"
+        }
+    },
+    "4": {
+        "question": "Is there any leakage in your apartment?",
+        "next": {
+            "Yes": "5",
+            "No": "6"
+        }
+    },
+    "5": {
+        "question": "Is the leakage causing damage?",
+        "next": {
+            "Yes": "7",
+            "No": "6"
+        }
+    },
+    "6": {
+        "question": "Are there any pest infestations?",
+        "next": {
+            "Yes": "8",
+            "No": "End"
+        }
+    },
+    "7": {
+        "question": "Has the landlord been notified?",
+        "next": {
+            "Yes": "6",
+            "No": "End"
+        }
+    },
+    "8": {
+        "question": "Is the landlord taking action?",
+        "next": {
+            "Yes": "End",
+            "No": "9"
+        }
+    },
+    "9": {
+        "question": "Have you reported this to authorities?",
+        "next": {
+            "Yes": "End",
+            "No": "End"
+        }
+    }
+}
