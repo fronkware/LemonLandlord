@@ -3,25 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemon Landlord Checker</title>
+    <title>Lemon Landlord Assessment</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
-        <header>
-            <h1>Lemon Landlord Checker</h1>
-            <div id="score">Lemon Landlord Score: <span id="lemonScore">0</span></div>
-        </header>
-        <main>
-            <div id="question-container">
-                <h2 id="question"></h2>
-                <div id="buttons">
-                    <button id="yesBtn">Yes</button>
-                    <button id="noBtn">No</button>
-                </div>
-                <button id="backBtn" style="display: none;">Back</button>
+    <div class="container">
+        <!-- Score Counter -->
+        <div class="score-counter">
+            <span class="score-label">Lemon Landlord Score:</span>
+            <span id="score" class="score-value">0</span>
+        </div>
+
+        <!-- Question Container -->
+        <div id="questionContainer" class="question-container">
+            <h2 id="questionText" class="question-text"></h2>
+            <div class="button-group">
+                <button id="yesBtn" class="answer-btn yes-btn" onclick="handleAnswer('yes')">
+                    YES
+                </button>
+                <button id="noBtn" class="answer-btn no-btn" onclick="handleAnswer('no')">
+                    NO
+                </button>
             </div>
-            <div id="report" style="display: none;"></div>
-        </main>
+            <button id="backBtn" class="back-btn" onclick="handleBack()">
+                ← Back
+            </button>
+        </div>
+
+        <!-- Report Container (Hidden Initially) -->
+        <div id="reportContainer" class="report-container" style="display: none;">
+            <h1>Assessment Complete!</h1>
+            <div class="final-score">
+                <h2>Final Lemon Landlord Score: <span id="finalScore"></span></h2>
+            </div>
+            <div class="report-content">
+                <h3>Your "No" Responses:</h3>
+                <ul id="reportList" class="report-list"></ul>
+            </div>
+            <button class="restart-btn" onclick="restart()">Start Over</button>
+        </div>
     </div>
+
+    <script src="decisionTree.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
