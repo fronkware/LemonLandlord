@@ -1,119 +1,120 @@
-const decisionTree = {
-    "1": {
-        "text": "Does your landlord respond to maintenance requests within 24 hours?",
-        "yes": "2",
-        "no": "3"
-    },
-    "2": {
-        "text": "Is your rent increased annually by more than 5%?",
-        "yes": "4",
-        "no": "5"
-    },
-    "3": {
-        "text": "Has your landlord ever entered your property without proper notice?",
-        "yes": "6",
-        "no": "4"
-    },
-    "4": {
-        "text": "Does your landlord provide a safe and secure living environment?",
-        "yes": "7",
-        "no": "8"
-    },
-    "5": {
-        "text": "Is your security deposit more than one month's rent?",
-        "yes": "8",
-        "no": "9"
-    },
-    "6": {
-        "text": "Has your landlord ever threatened to evict you without proper cause?",
-        "yes": "8",
-        "no": "7"
-    },
-    "7": {
-        "text": "Does your landlord keep detailed records of all transactions and communications?",
-        "yes": "9",
-        "no": "10"
-    },
-    "8": {
-        "text": "Has your landlord ever refused to make necessary repairs?",
-        "yes": "10",
-        "no": "9"
-    },
-    "9": {
-        "text": "Does your landlord respect your right to quiet enjoyment of the property?",
-        "yes": "end",
-        "no": "10"
-    },
-    "10": {
-        "text": "Has your landlord ever discriminated against you or other tenants?",
-        "yes": "end",
-        "no": "end"
-    }
-};
-
-let currentQuestion;
-let history = [];
+// Application State
+let currentQuestionId = null;
 let lemonScore = 0;
+let questionHistory = [];
+let noResponses = [];
 
-function startQuiz() {
-    currentQuestion = decisionTree['1'];
-    updateQuestion();
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    startQuestionnaire();
+});
+
+// Start or restart the questionnaire
+function startQuestionnaire() {
+    currentQuestionId = decisionTree.startQuestion;
+    lemonScore = 0;
+    questionHistory = [];
+    noResponses = [];
+    updateScore();
+    showQuestion();
+    document.getElementById('questionContainer').style.display = 'block';
+    document.getElementById('reportContainer').style.display = 'none';
 }
 
-function updateQuestion() {
-    document.getElementById('question').textContent = currentQuestion.text;
-    document.getElementById('backBtn').style.display = history.length > 0 ? 'inline-block' : 'none';
+// Display the current question
+function showQuestion() {
+    const question = decisionTree.questions[currentQuestionId];
+    if (question) {
+        document.getElementById('questionText').textContent = question.text;
+        
+        // Update back button state
+        const backBtn = document.getElementById('backBtn');
+        if (questionHistory.length === 0) {
+            backBtn.disabled = true;
+            backBtn.style.opacity = '0.5';
+        } else {
+            backBtn.disabled = false;
+            backBtn.style.opacity = '1';
+        }
+    }
 }
 
-function answerQuestion(answer) {
-    history.push({...currentQuestion, answer});
+// Handle answer selection
+function handleAnswer(answer) {
+    const currentQuestion = decisionTree.questions[currentQuestionId];
+    
+    // Store history
+    questionHistory.push({
+        questionId: currentQuestionId,
+        answer: answer,
+        wasNo: answer === 'no'
+    });
+    
+    // Track "No" responses
     if (answer === 'no') {
         lemonScore++;
-        document.getElementById('lemonScore').textContent = lemonScore;
+        noResponses.push(currentQuestion.text);
+        updateScore();
     }
-
+    
+    // Get next question
     const nextQuestionId = currentQuestion[answer];
+    
     if (nextQuestionId === 'end') {
         showReport();
     } else {
-        currentQuestion = decisionTree[nextQuestionId];
-        updateQuestion();
+        currentQuestionId = nextQuestionId;
+        showQuestion();
     }
 }
 
-function goBack() {
-    if (history.length > 0) {
-        const previousQuestion = history.pop();
-        if (previousQuestion.answer === 'no') {
+// Handle back button
+function handleBack() {
+    if (questionHistory.length > 0) {
+        const lastEntry = questionHistory.pop();
+        
+        // Adjust score if last answer was "No"
+        if (lastEntry.wasNo) {
             lemonScore--;
-            document.getElementById('lemonScore').textContent = lemonScore;
+            noResponses.pop();
+            updateScore();
         }
-        currentQuestion = previousQuestion;
-        updateQuestion();
+        
+        // Go back to previous question
+        currentQuestionId = lastEntry.questionId;
+        showQuestion();
     }
 }
 
-function showReport() {
-    const reportContainer = document.getElementById('report');
-    reportContainer.innerHTML = '<h2>Report</h2>';
-    const list = document.createElement('ul');
-    
-    history.forEach(question => {
-        if (question.answer === 'no') {
-            const listItem = document.createElement('li');
-            listItem.textContent = question.text;
-            list.appendChild(listItem);
-        }
-    });
-
-    reportContainer.appendChild(list);
-    document.getElementById('question-container').style.display = 'none';
-    reportContainer.style.display = 'block';
+// Update the score display
+function updateScore() {
+    document.getElementById('score').textContent = lemonScore;
 }
 
-document.getElementById('yesBtn').addEventListener('click', () => answerQuestion('yes'));
-document.getElementById('noBtn').addEventListener('click', () => answerQuestion('no'));
-document.getElementById('backBtn').addEventListener('click', goBack);
+// Show the final report
+function showReport() {
+    document.getElementById('questionContainer').style.display = 'none';
+    document.getElementById('reportContainer').style.display = 'block';
+    
+    // Set final score
+    document.getElementById('finalScore').textContent = lemonScore;
+    
+    // Populate the report list
+    const reportList = document.getElementById('reportList');
+    reportList.innerHTML = '';
+    
+    if (noResponses.length === 0) {
+        reportList.innerHTML = '<li>Congratulations! You answered "Yes" to all questions.</li>';
+    } else {
+        noResponses.forEach((question, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${index + 1}. ${question}`;
+            reportList.appendChild(li);
+        });
+    }
+}
 
-// Start the quiz when the page loads
-window.onload = startQuiz;
+// Restart the questionnaire
+function restart() {
+    startQuestionnaire();
+}
